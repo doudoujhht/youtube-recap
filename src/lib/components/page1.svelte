@@ -3,13 +3,11 @@
 	import { fadeOut, fadeIn } from '$lib/transition';
 	import VanillaTilt from 'vanilla-tilt';
 	import { onMount } from 'svelte';
-
 	let text: HTMLParagraphElement;
 	let container: HTMLDivElement;
 	let first: HTMLHeadingElement;
 	let second: HTMLHeadingElement;
 	let third: HTMLHeadingElement;
-
 	const containerFadeOut = (e: any) => fadeOut(container, { duration: 400, delay: 0 });
 	const firstFadeout = (e: any) => fadeIn(first, { duration: 400, delay: 600 });
 	const secondFadeout = (e: any) => fadeIn(second, { duration: 400, delay: 1000 });
@@ -19,9 +17,9 @@
 
 	onMount(() => {
 		VanillaTilt.init(container, {
-			max: 25,
+			max: 20,
 			speed: 300,
-			reset: false
+			reset: false,
 		});
 	});
 </script>
@@ -29,7 +27,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore missing-declaration -->
 <div
-	class="max-w-[960vw] w-[96vw] max-h-[100vh] h-[100vh] flex justify-center items-center fade-out"
+	class="max-w-[960vw] w-[96vw] max-h-[100vh] h-[100vh] flex justify-center items-center fade-out cursor-default"
 	bind:this={container}
 	in:slide={{ delay: 500 }}
 	out:containerFadeOut
