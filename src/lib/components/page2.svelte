@@ -1,31 +1,45 @@
 <script lang="ts">
 	import { fade, blur, fly, slide, scale, draw, crossfade } from 'svelte/transition';
+	import { fadeOut, fadeIn } from '$lib/transition';
 	let container: HTMLDivElement;
-	const fadeOut = ({ duration, delay }: { duration: number; delay: number }) => {
-		const o = +getComputedStyle(container).opacity;
-		return {
-			delay: delay ?? 0,
-			duration: duration ?? 400,
-			easing: (t: number) => t,
-			css: (t: number) => `opacity: ${t * o};
-                                transform: translateY(${
-																	(100 - t * 100) * -1
-																}px) rotateX(0) rotateY(0);
-                                position:fixed;
-                                right:0;
-                                left:0;
-                                margin:0;
-                                padding:0
-                                `
-		};
-	};
+	let image: HTMLImageElement;
+	let paragraph: HTMLParagraphElement;
+	let titre: HTMLHeadingElement;
+	let containerFadeOut = (e: any) => fadeOut(container, { duration: 400, delay: 0 });
+	let imageFadeIn = (e: any) => fadeIn(image, { duration: 400, delay: 600 });
+	let titreFadeIn = (e: any) => fadeIn(image, { duration: 400, delay: 1000 });
+	let paragraphFadeIn = (e: any) => fadeIn(image, { duration: 400, delay: 1400 });
 </script>
 
 <div
-	class="max-w-[96vw] w-[96vw] max-h-[100vh] h-[100vh] flex justify-center items-center "
+	class="w-[96vw] max-h-[100vh] h-[100vh] flex justify-center text-center"
 	bind:this={container}
-	in:slide={{ delay: 500 }}
-	out:fadeOut
+	out:containerFadeOut
 >
-	<p>your most watched creator was <span>penguinsz0</span></p>
+	<div class="mt-8 flex flex-col items-center">
+		<h1 class="text-[72px] mb-8" bind:this={titre} in:titreFadeIn>
+			Your most watched creator was <span class="text-primary">penguinsz0</span>
+		</h1>
+		<p bind:this={paragraph} in:paragraphFadeIn>
+			you watched their videos <span class="text-primary font-bold">961 times</span> this year
+		</p>
+		<img
+			src="assets/image.webp"
+			bind:this={image}
+			alt=""
+			class="w-[250px] rounded-full mt-10"
+			in:imageFadeIn
+		/>
+	</div>
 </div>
+
+<style>
+	div div {
+		width: min(932px, 100%);
+	}
+	h1 {
+		font-weight: 700;
+		letter-spacing: -0.05em;
+		line-height: 1;
+	}
+</style>

@@ -1,36 +1,29 @@
 <script lang="ts">
 	import { fade, blur, fly, slide, scale, draw, crossfade } from 'svelte/transition';
+	import { fadeOut, fadeIn } from '$lib/transition';
+	import VanillaTilt from 'vanilla-tilt';
+	import { onMount } from 'svelte';
+
 	let text: HTMLParagraphElement;
 	let container: HTMLDivElement;
-	function handleHover(e: MouseEvent) {
-		let rect = text.getBoundingClientRect();
-		let x = e.clientX - rect.left;
-		let y = e.clientY - rect.top;
+	let first: HTMLHeadingElement;
+	let second: HTMLHeadingElement;
+	let third: HTMLHeadingElement;
 
-		let nombreX = (x / text.clientWidth) * 50;
-		let nombreY = (y / text.clientHeight) * 40;
-		nombreY -= 15;
-		nombreX -= 13.25;
-		text.style.transform = 'rotateY(' + nombreX + 'deg) rotateX(' + nombreY + 'deg)';
-		console.log(text.style.transform);
-	}
-	const fadeOut = () => {
-		const o = +getComputedStyle(container).opacity;
-		return {
-			delay: 0,
-			duration: 400,
-			easing: (t: number) => t,
-			css: (t: number) => `opacity: ${t * o};
-                                transform: translateY(${
-																	(100 - t * 100) * -1
-																}px) rotateX(0) rotateY(0);
-                                position:fixed;
-                                right:0;
-                                left:0;
-                                margin:0;
-                                padding:0;`
-		};
-	};
+	const containerFadeOut = (e: any) => fadeOut(container, { duration: 400, delay: 0 });
+	const firstFadeout = (e: any) => fadeIn(first, { duration: 400, delay: 600 });
+	const secondFadeout = (e: any) => fadeIn(second, { duration: 400, delay: 1000 });
+	const thirdFadeout = (e: any) => fadeIn(third, { duration: 400, delay: 1400 });
+
+	let tiltElement: HTMLDivElement;
+
+	onMount(() => {
+		VanillaTilt.init(container, {
+			max: 25,
+			speed: 300,
+			reset: false
+		});
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -39,19 +32,23 @@
 	class="max-w-[960vw] w-[96vw] max-h-[100vh] h-[100vh] flex justify-center items-center fade-out"
 	bind:this={container}
 	in:slide={{ delay: 500 }}
-	out:fadeOut
+	out:containerFadeOut
 >
 	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
-	<p class="text-[72px]" bind:this={text} on:mousemove={(e) => handleHover(e)} id="container">
-		this year, you watched<br /><span
-			class="text-primary text-[54px] mr-2 md:text-[100px] md:mr-4 lg:text-[200px] tracking-[-.05em] leading-tight lg:mr-6 inline"
-			>12898</span
-		>
-		videos<br />from
-		<span class="text-secondary">3587</span> different creators
-		<button>jean</button>
-		<span class="inactive">inactive</span>
-	</p>
+	<div class="text-[72px]" bind:this={text} id="container">
+		<p class="transform-none" in:firstFadeout>this year, you watched</p>
+		<p class="transform-none" in:secondFadeout>
+			<span
+				class="text-primary text-[54px] mr-2 md:text-[100px] md:mr-4 lg:text-[200px] tracking-[-.05em] leading-tight lg:mr-6 inline"
+				>12898</span
+			>
+			videos
+		</p>
+		<p class="transform-none" in:thirdFadeout>
+			from
+			<span class="text-secondary">3587</span> different creators
+		</p>
+	</div>
 </div>
 
 <style>
@@ -59,9 +56,8 @@
 		font-weight: 700;
 		letter-spacing: -0.05em;
 		line-height: 1.2;
-		width: 80%;
-		transition: all 0.3s;
-		transform-style: flat;
+		transition: all 0.3s 0s;
+		transform-style: preserve-3d;
 		transform-origin: center;
 	}
 	#container {
