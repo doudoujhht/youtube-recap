@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { fade, blur, fly, slide, scale, draw, crossfade } from 'svelte/transition';
 	import { fadeOut, fadeIn } from '$lib/transition';
+	export let title: string;
+	export let thumbnail: string;
+	export let numberOfviews: number;
 	let container: HTMLDivElement;
 	let image: HTMLImageElement;
 	let paragraph: HTMLParagraphElement;
@@ -18,13 +21,14 @@
 >
 	<div class="mt-8 flex flex-col items-center">
 		<h1 class="text-[72px] mb-8" bind:this={titre} in:titreFadeIn>
-			Your most watched creator was <span class="text-primary">penguinsz0</span>
+			Your most watched creator was <span class="text-primary">{title}</span>
 		</h1>
 		<p bind:this={paragraph} in:paragraphFadeIn>
-			you watched their videos <span class="text-primary font-bold">961 times</span> this year
+			you watched their videos <span class="text-primary font-bold">{numberOfviews} times</span> this
+			year
 		</p>
 		<img
-			src="assets/image.webp"
+			src={thumbnail}
 			bind:this={image}
 			alt=""
 			class="w-[250px] rounded-full mt-10"

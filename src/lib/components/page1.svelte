@@ -1,8 +1,11 @@
 <script lang="ts">
+
 	import { fade, blur, fly, slide, scale, draw, crossfade } from 'svelte/transition';
 	import { fadeOut, fadeIn } from '$lib/transition';
 	import VanillaTilt from 'vanilla-tilt';
 	import { onMount } from 'svelte';
+	export let numberOfVideoWatched: number;
+	export let numberOfCreators: number;
 	let text: HTMLParagraphElement;
 	let container: HTMLDivElement;
 	let first: HTMLHeadingElement;
@@ -19,7 +22,7 @@
 		VanillaTilt.init(container, {
 			max: 20,
 			speed: 300,
-			reset: false,
+			reset: false
 		});
 	});
 </script>
@@ -38,13 +41,13 @@
 		<p class="transform-none" in:secondFadeout>
 			<span
 				class="text-primary text-[54px] mr-2 md:text-[100px] md:mr-4 lg:text-[200px] tracking-[-.05em] leading-tight lg:mr-6 inline"
-				>12898</span
+				>{numberOfVideoWatched}</span
 			>
 			videos
 		</p>
 		<p class="transform-none" in:thirdFadeout>
 			from
-			<span class="text-secondary">3587</span> different creators
+			<span class="text-secondary">{numberOfCreators}</span> different creators
 		</p>
 	</div>
 </div>
